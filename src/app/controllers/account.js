@@ -15,9 +15,9 @@ class Account {
                     return user.email == email && password == user.password;
                 });
                 if(indexUser < 0){
-                    return res.send("May be your E-mail or password was wrong!");
+                    return res.status(401).send("May be your E-mail or password was wrong!");
                 }else{
-                    return res.send("Login success");
+                    return res.status(200).send("Login success");
                 }
             });
         } catch (error) {
@@ -38,14 +38,14 @@ class Account {
                     return user.email == email;
                 });
                 if (indexUser > -1) {
-                    return res.send("Email exsit");
+                    return res.status(401).json({message:"Email exsit"});
                 }
 
                 query = `INSERT INTO blogreview.useraccount(username,email,password,avartar) VALUES ("${username}","${email}","${password}",200)`;
-                console.log(query);
                 db.query(query, function (err, re) {
                     if (err) throw err;
-                    return res.send("Add new user successful");
+                    return res.status(200).json({message:"Register successful",
+                User: re});
                 });
             });
         } catch (error) {
